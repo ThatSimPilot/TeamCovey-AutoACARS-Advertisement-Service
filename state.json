@@ -1,0 +1,12 @@
+{
+  "flights": {
+    "CVY44N": {
+      "last_seen": 1793073349.5444863,
+      "seen_ground": true,
+      "ground_alt": 37,
+      "flew": true,
+      "last_ad": "A MESSAGE FROM HP:\nYOUR PRINTER IS LOW ON INK. PLEASE REPLACE THE CARTRIDGE TO CONTINUE READING THIS MESSAGE. THE CARTRIDGE COSTS $140. THE PRINTER COSTS $60.",
+      "climb_sent": true
+    }
+  }
+}
