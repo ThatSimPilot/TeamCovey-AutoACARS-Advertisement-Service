@@ -22,11 +22,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Write ads.json from secret
+        env:
+          ADS_JSON: ${{ secrets.ADS_JSON }}
+        run: printf '%s' "$ADS_JSON" > ads.json
       - name: Poll VATSIM and send telex
         env:
           HOPPIE_LOGON: ${{ secrets.HOPPIE_LOGON }}
           CALLSIGN_REGEX: "^CVY[0-9]"
           FROM_STATION: COMPANY
+          EXTRA_CALLSIGNS: ${{ vars.EXTRA_CALLSIGNS }}
         run: python acars_bot.py
       - name: Save state
         run: |
