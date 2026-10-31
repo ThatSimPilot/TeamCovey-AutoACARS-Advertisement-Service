@@ -6,7 +6,7 @@ Stdlib only. Config via environment variables:
   EXTRA_CALLSIGNS  comma-separated exact callsigns to watch as well (e.g. QFA7344,JST675)
   FROM_STATION   sender name shown on telex   (default COMPANY)
   POLL_SECONDS   delay between polls          (default 20)
-  DRY_RUN        "1" = print instead of send
+  DRY_RUN        "1" = log instead of send
 """
 import json
 import os
