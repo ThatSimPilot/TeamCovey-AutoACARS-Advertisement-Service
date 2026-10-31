@@ -1,9 +1,9 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793448521.4410627,
+      "last_seen": 1793456134.1991549,
       "seen_ground": true,
-      "ground_alt": 376
+      "ground_alt": 36
     }
   }
 }
