@@ -31,7 +31,7 @@ jobs:
         env:
           HOPPIE_LOGON: ${{ secrets.HOPPIE_LOGON }}
           CALLSIGN_REGEX: "^CVY[0-9]"
-          FROM_STATION: COMPANY
+          FROM_STATION: ${{ vars.FROM_STATION || 'COMPANY' }}
           EXTRA_CALLSIGNS: ${{ vars.EXTRA_CALLSIGNS }}
         run: python acars_bot.py
       - name: Save state
