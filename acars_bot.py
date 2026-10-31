@@ -5,7 +5,7 @@ Stdlib only. Config via environment variables:
   CALLSIGN_REGEX   callsigns to watch by pattern (default ^CVY[0-9])
   EXTRA_CALLSIGNS  comma-separated exact callsigns to watch as well (e.g. QFA7344,JST675)
   FROM_STATION   sender name shown on telex   (default COMPANY)
-  POLL_SECONDS   delay between polls          (default 20)
+  POLL_SECONDS   fast poll interval            (default 20); slower rates are fixed in code
   DRY_RUN        "1" = log instead of send
 """
 import json
@@ -57,6 +57,14 @@ LANDING_HOLD_SECONDS = 60   # must stay below LANDING_SPEED_MAX this long
 LANDING_ALT_MAX = 5000      # ft; ignore a paused sim at altitude
 RESET_AFTER_MISSING = 30 * 60  # s offline before a flight's state is dropped
 DISCONNECT_POLLS = 3        # empty polls in a row before a flight counts as disconnected
+
+# Seconds between polls, per flight phase. Fast only while a telex may be due.
+FAST_SECONDS = POLL_SECONDS  # takeoff, climb to the climb ad, and below LOW_ALT_FT
+MID_SECONDS = 120            # on the ground, or descending above LOW_ALT_FT
+SLOW_SECONDS = 300           # cruise after the climb ad, or levelling off / climbing again
+ALT_BUFFER_FT = 1000         # altitude change that counts as climbing or descending
+LEVEL_SECONDS = 600          # a descent with no ALT_BUFFER_FT move this long is levelled
+LOW_ALT_FT = 5000            # below this during a descent, poll fast again
 
 
 def load_state():
@@ -149,15 +157,47 @@ def update_flight(callsign, st, p, now):
         st.pop("slow_since", None)
 
 
+def track_descent(st, alt, now):
+    """Set st['descending'] from altitude moves, using the ALT_BUFFER_FT buffer."""
+    if st.get("descending"):
+        st["trough"] = min(st["trough"], alt)
+        if alt >= st["trough"] + ALT_BUFFER_FT:  # climbing again
+            st.update(descending=False, peak=alt)
+        elif abs(alt - st["anchor"]) >= ALT_BUFFER_FT:
+            st.update(anchor=alt, anchor_t=now)
+        elif now - st["anchor_t"] >= LEVEL_SECONDS:  # levelled off
+            st.update(descending=False, peak=alt)
+    else:
+        st["peak"] = max(st.get("peak", alt), alt)
+        if alt <= st["peak"] - ALT_BUFFER_FT:
+            st.update(descending=True, trough=alt, anchor=alt, anchor_t=now)
+
+
+def poll_interval(st, alt, gs, now):
+    """Seconds until this flight's next poll (call after update_flight)."""
+    if not st.get("flew"):
+        if gs <= GROUND_SPEED_MAX:
+            return MID_SECONDS
+        if st.get("seen_ground") and gs >= AIRBORNE_SPEED_MIN:
+            return FAST_SECONDS  # takeoff roll and climb-out
+        return MID_SECONDS if st.get("seen_ground") else SLOW_SECONDS
+    if not st.get("climb_sent") or alt < LOW_ALT_FT:
+        return FAST_SECONDS  # climb ad still due, or landing window
+    track_descent(st, alt, now)
+    return MID_SECONDS if st.get("descending") else SLOW_SECONDS
+
+
 def poll(state):
     now = time.time()
     flights = state.setdefault("flights", {})
     seen = set()
+    waits = []
     for p in get_pilots():
         cs = p["callsign"].upper()
         seen.add(cs)
         st = flights.setdefault(cs, {})
         update_flight(cs, st, p, now)
+        waits.append(poll_interval(st, p["altitude"], p["groundspeed"], now))
         print(f"{cs}: alt={p['altitude']} gs={p['groundspeed']} state={ {k: v for k, v in st.items() if k != 'last_seen'} }")
     for cs in list(flights):
         if cs not in seen and now - flights[cs].get("last_seen", 0) > RESET_AFTER_MISSING:
@@ -165,7 +205,8 @@ def poll(state):
             del flights[cs]
     if not seen:
         print("No matching callsigns on VATSIM.")
-    return seen
+    # Shortest wait across flights; quick re-polls when none is seen, so disconnects are noticed fast.
+    return seen, min(waits, default=POLL_SECONDS)
 
 
 def main():
@@ -175,18 +216,19 @@ def main():
     missing = 0
     while True:
         try:
-            seen = poll(state)
+            seen, wait = poll(state)
             save_state(state)
         except Exception as e:  # network blips shouldn't end a flight
             print(f"Error: {e}")
-            seen = flying
+            seen, wait = flying, POLL_SECONDS
         if seen:
             flying, missing = True, 0
         elif flying:
             missing += 1
         if not flying or missing >= DISCONNECT_POLLS:
             break
-        time.sleep(POLL_SECONDS)
+        print(f"next poll in {wait}s", flush=True)
+        time.sleep(wait)
 
 
 if __name__ == "__main__":
