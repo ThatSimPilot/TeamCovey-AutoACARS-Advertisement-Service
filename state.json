@@ -1,10 +1,9 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793446559.4653459,
-      "flew": true,
-      "last_ad": "A MESSAGE FROM NETFLIX:\nTHE ONLY TITLE AVAILABLE ON BOARD IS 'AIR CRASH INVESTIGATION: SEASON 14'. PLEASE STAY SEATED AND ENJOY.",
-      "climb_sent": false
+      "last_seen": 1793448521.4410627,
+      "seen_ground": true,
+      "ground_alt": 376
     }
   }
 }
