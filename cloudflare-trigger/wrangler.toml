@@ -1,0 +1,7 @@
+name = "acars-trigger"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+# Every 5 minutes, start the acars.yml workflow on GitHub.
+[triggers]
+crons = ["*/5 * * * *"]
