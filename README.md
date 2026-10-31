@@ -6,8 +6,8 @@ It is an automated parody. It is not affiliated with any airline or advertiser.
 
 ## How it works
 
-1. Every 5 minutes, a GitHub Actions workflow runs `acars_bot.py`.
-2. The bot polls the VATSIM live data feed for about 4.5 minutes, every 20 seconds.
+1. Every 5 minutes, a GitHub Actions workflow runs `acars_bot.py`, which scans the VATSIM live data feed once.
+2. If a matching flight is online, the bot keeps polling every 20 seconds until that flight has been offline for about 60 seconds.
 3. Pilots whose callsign matches `CALLSIGN_REGEX` (default `^CVY[0-9]`) or appears in `EXTRA_CALLSIGNS` are tracked.
 4. Per flight, the bot follows a small state machine:
    - **Ground:** the aircraft is at or below 40 kt. The bot records the field altitude.
@@ -54,7 +54,6 @@ HOPPIE_LOGON=your-logon-code
 CALLSIGN_REGEX=^CVY[0-9]
 EXTRA_CALLSIGNS=QFA7344,JST675
 FROM_STATION=COMPANY
-RUN_SECONDS=270
 POLL_SECONDS=20
 DRY_RUN=1
 ```
@@ -73,7 +72,6 @@ Add `HOPPIE_LOGON` as a repository secret under **Settings → Secrets and varia
 | `CALLSIGN_REGEX` | `^CVY[0-9]` | Regex matched against upper-cased callsigns. |
 | `EXTRA_CALLSIGNS` | (empty) | Comma-separated exact callsigns to watch as well. |
 | `FROM_STATION` | `COMPANY` | Sender name shown on the telex. |
-| `RUN_SECONDS` | `270` | How long one run keeps polling. `0` runs forever. |
 | `POLL_SECONDS` | `20` | Delay between VATSIM polls. |
 | `DRY_RUN` | (unset) | Set to `1` to print telexes instead of sending them. |
 

@@ -5,7 +5,6 @@ Stdlib only. Config via environment variables:
   CALLSIGN_REGEX   callsigns to watch by pattern (default ^CVY[0-9])
   EXTRA_CALLSIGNS  comma-separated exact callsigns to watch as well (e.g. QFA7344,JST675)
   FROM_STATION   sender name shown on telex   (default COMPANY)
-  RUN_SECONDS    how long to keep polling, 0 = forever (default 270)
   POLL_SECONDS   delay between polls          (default 20)
   DRY_RUN        "1" = print instead of send
 """
@@ -42,7 +41,6 @@ load_dotenv()
 EXTRA_CALLSIGNS = {c.strip().upper() for c in os.environ.get("EXTRA_CALLSIGNS", "").split(",") if c.strip()}
 CALLSIGN_RE = re.compile(os.environ.get("CALLSIGN_REGEX", r"^CVY[0-9]"))
 FROM_STATION = os.environ.get("FROM_STATION", "COMPANY").upper()
-RUN_SECONDS = int(os.environ.get("RUN_SECONDS", "270"))
 POLL_SECONDS = int(os.environ.get("POLL_SECONDS", "20"))
 DRY_RUN = os.environ.get("DRY_RUN") == "1"
 
@@ -58,6 +56,7 @@ LANDING_SPEED_MAX = 50      # kt; below this after flying = landed / taxiing in
 LANDING_HOLD_SECONDS = 60   # must stay below LANDING_SPEED_MAX this long
 LANDING_ALT_MAX = 5000      # ft; ignore a paused sim at altitude
 RESET_AFTER_MISSING = 30 * 60  # s offline before a flight's state is dropped
+DISCONNECT_POLLS = 3        # empty polls in a row before a flight counts as disconnected
 
 
 def load_state():
@@ -165,18 +164,26 @@ def poll(state):
             del flights[cs]
     if not seen:
         print("No matching callsigns on VATSIM.")
+    return seen
 
 
 def main():
+    # One scan; if a matching flight is online, keep polling until it disconnects.
     state = load_state()
-    deadline = time.time() + RUN_SECONDS if RUN_SECONDS else float("inf")  # 0 = run forever
+    flying = False
+    missing = 0
     while True:
         try:
-            poll(state)
+            seen = poll(state)
             save_state(state)
-        except Exception as e:  # network blips shouldn't kill the run
+        except Exception as e:  # network blips shouldn't end a flight
             print(f"Error: {e}")
-        if time.time() + POLL_SECONDS > deadline:
+            seen = flying
+        if seen:
+            flying, missing = True, 0
+        elif flying:
+            missing += 1
+        if not flying or missing >= DISCONNECT_POLLS:
             break
         time.sleep(POLL_SECONDS)
 
