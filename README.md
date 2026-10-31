@@ -8,8 +8,9 @@ It is an automated parody. It is not affiliated with any airline or advertiser.
 
 1. Every 5 minutes, a GitHub Actions workflow runs `acars_bot.py`, which scans the VATSIM live data feed once.
 2. If a matching flight is online, the bot keeps polling until that flight has been offline for about 60 seconds. The poll rate follows the flight:
-   - **20 seconds:** the takeoff roll and climb until the climb ad is sent, and below 5,000 ft (for the landing ad).
-   - **2 minutes:** on the ground, and while descending above 5,000 ft.
+   - **1 minute:** on the ground, and climbing up to 5,000 ft.
+   - **10 seconds:** from 5,000 ft until the climb ad is sent, and below 5,000 ft (for the landing ad).
+   - **2 minutes:** while descending above 5,000 ft.
    - **5 minutes:** cruise after the climb ad, and when levelled off for 10 minutes or climbing again during a descent.
    - Climbing or descending means a 1,000 ft change from the last reference altitude.
 3. Pilots whose callsign matches `CALLSIGN_REGEX` (default `^CVY[0-9]`) or appears in `EXTRA_CALLSIGNS` are tracked.
@@ -58,7 +59,6 @@ HOPPIE_LOGON=your-logon-code
 CALLSIGN_REGEX=^CVY[0-9]
 EXTRA_CALLSIGNS=QFA7344,JST675
 FROM_STATION=COMPANY
-POLL_SECONDS=20
 DRY_RUN=1
 ```
 
@@ -76,7 +76,6 @@ Add `HOPPIE_LOGON` as a repository secret under **Settings → Secrets and varia
 | `CALLSIGN_REGEX` | `^CVY[0-9]` | Regex matched against upper-cased callsigns. |
 | `EXTRA_CALLSIGNS` | (empty) | Comma-separated exact callsigns to watch as well. |
 | `FROM_STATION` | `COMPANY` | Sender name shown on the telex. |
-| `POLL_SECONDS` | `20` | Fast poll interval, used while a telex may be due. The slower 2-minute and 5-minute rates are fixed in `acars_bot.py`. |
 | `DRY_RUN` | (unset) | Set to `1` to print telexes instead of sending them. |
 
 ## Running

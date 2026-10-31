@@ -5,7 +5,6 @@ Stdlib only. Config via environment variables:
   CALLSIGN_REGEX   callsigns to watch by pattern (default ^CVY[0-9])
   EXTRA_CALLSIGNS  comma-separated exact callsigns to watch as well (e.g. QFA7344,JST675)
   FROM_STATION   sender name shown on telex   (default COMPANY)
-  POLL_SECONDS   fast poll interval            (default 20); slower rates are fixed in code
   DRY_RUN        "1" = log instead of send
 """
 import json
@@ -41,7 +40,6 @@ load_dotenv()
 EXTRA_CALLSIGNS = {c.strip().upper() for c in os.environ.get("EXTRA_CALLSIGNS", "").split(",") if c.strip()}
 CALLSIGN_RE = re.compile(os.environ.get("CALLSIGN_REGEX", r"^CVY[0-9]"))
 FROM_STATION = os.environ.get("FROM_STATION", "COMPANY").upper()
-POLL_SECONDS = int(os.environ.get("POLL_SECONDS", "20"))
 DRY_RUN = os.environ.get("DRY_RUN") == "1"
 
 FOOTER = "\nAUTOMATED PARODY. NOT AFFILIATED."
@@ -58,13 +56,14 @@ LANDING_ALT_MAX = 5000      # ft; ignore a paused sim at altitude
 RESET_AFTER_MISSING = 30 * 60  # s offline before a flight's state is dropped
 DISCONNECT_POLLS = 3        # empty polls in a row before a flight counts as disconnected
 
-# Seconds between polls, per flight phase. Fast only while a telex may be due.
-FAST_SECONDS = POLL_SECONDS  # takeoff, climb to the climb ad, and below LOW_ALT_FT
-MID_SECONDS = 120            # on the ground, or descending above LOW_ALT_FT
-SLOW_SECONDS = 300           # cruise after the climb ad, or levelling off / climbing again
+# Seconds between polls, per flight phase.
+FAST_SECONDS = 10            # climb from LOW_ALT_FT until the climb ad, and below LOW_ALT_FT
+GROUND_SECONDS = 60          # on the ground, and climbing up to LOW_ALT_FT
+DESCENT_SECONDS = 120        # descending above LOW_ALT_FT
+CRUISE_SECONDS = 300         # cruise after the climb ad, or levelling off / climbing again
 ALT_BUFFER_FT = 1000         # altitude change that counts as climbing or descending
 LEVEL_SECONDS = 600          # a descent with no ALT_BUFFER_FT move this long is levelled
-LOW_ALT_FT = 5000            # below this during a descent, poll fast again
+LOW_ALT_FT = 5000            # poll rate changes at this altitude
 
 
 def load_state():
@@ -173,18 +172,16 @@ def track_descent(st, alt, now):
             st.update(descending=True, trough=alt, anchor=alt, anchor_t=now)
 
 
-def poll_interval(st, alt, gs, now):
+def poll_interval(st, alt, now):
     """Seconds until this flight's next poll (call after update_flight)."""
     if not st.get("flew"):
-        if gs <= GROUND_SPEED_MAX:
-            return MID_SECONDS
-        if st.get("seen_ground") and gs >= AIRBORNE_SPEED_MIN:
-            return FAST_SECONDS  # takeoff roll and climb-out
-        return MID_SECONDS if st.get("seen_ground") else SLOW_SECONDS
-    if not st.get("climb_sent") or alt < LOW_ALT_FT:
-        return FAST_SECONDS  # climb ad still due, or landing window
+        return GROUND_SECONDS if st.get("seen_ground") else CRUISE_SECONDS  # mid-air joins send nothing
+    if alt < LOW_ALT_FT:
+        return GROUND_SECONDS if not st.get("climb_sent") else FAST_SECONDS  # climb-out, or landing
+    if not st.get("climb_sent"):
+        return FAST_SECONDS  # climb ad due
     track_descent(st, alt, now)
-    return MID_SECONDS if st.get("descending") else SLOW_SECONDS
+    return DESCENT_SECONDS if st.get("descending") else CRUISE_SECONDS
 
 
 def poll(state):
@@ -197,7 +194,7 @@ def poll(state):
         seen.add(cs)
         st = flights.setdefault(cs, {})
         update_flight(cs, st, p, now)
-        waits.append(poll_interval(st, p["altitude"], p["groundspeed"], now))
+        waits.append(poll_interval(st, p["altitude"], now))
         print(f"{cs}: alt={p['altitude']} gs={p['groundspeed']} state={ {k: v for k, v in st.items() if k != 'last_seen'} }")
     for cs in list(flights):
         if cs not in seen and now - flights[cs].get("last_seen", 0) > RESET_AFTER_MISSING:
@@ -206,7 +203,7 @@ def poll(state):
     if not seen:
         print("No matching callsigns on VATSIM.")
     # Shortest wait across flights; quick re-polls when none is seen, so disconnects are noticed fast.
-    return seen, min(waits, default=POLL_SECONDS)
+    return seen, min(waits, default=FAST_SECONDS)
 
 
 def main():
@@ -220,7 +217,7 @@ def main():
             save_state(state)
         except Exception as e:  # network blips shouldn't end a flight
             print(f"Error: {e}")
-            seen, wait = flying, POLL_SECONDS
+            seen, wait = flying, FAST_SECONDS
         if seen:
             flying, missing = True, 0
         elif flying:
