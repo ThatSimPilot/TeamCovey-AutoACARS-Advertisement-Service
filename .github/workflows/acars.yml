@@ -33,7 +33,7 @@ jobs:
           CALLSIGN_REGEX: "^CVY[0-9]"
           FROM_STATION: ${{ vars.FROM_STATION || 'COMPANY' }}
           EXTRA_CALLSIGNS: ${{ vars.EXTRA_CALLSIGNS }}
-        run: python acars_bot.py
+        run: python -u acars_bot.py  # -u: unbuffered, so the log shows progress while the run is live
       - name: Save state
         if: ${{ always() }}  # still commit progress if the flight run hits the timeout
         run: |

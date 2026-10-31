@@ -109,10 +109,11 @@ def send_ad(callsign, kind, st):
         print(f"{callsign}: ad too long ({len(text)} > {TELEX_MAX}), not sent: {ad[:40]}")
         return False
     result = send_telex(callsign, text)
-    print(f"{callsign}: sent {kind} ad ({len(text)} chars) -> {result}")
     if result.lower().startswith("ok"):
+        print(f"SENT {kind} telex to {callsign} ({len(text)} chars): {result}", flush=True)
         st["last_ad"] = ad
         return True
+    print(f"NOT SENT {kind} telex to {callsign}: {result}", flush=True)
     return False
 
 
