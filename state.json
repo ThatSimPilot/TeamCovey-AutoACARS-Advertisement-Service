@@ -1,13 +1,10 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793497931.2745929,
-      "ground_alt": 35,
+      "last_seen": 1793518415.4157865,
       "seen_ground": true,
-      "flew": true,
-      "last_ad": "A MESSAGE FROM WIKIPEDIA:\nTHIS FLIGHT'S SAFETY RECORD NEEDS ADDITIONAL CITATIONS. [CITATION NEEDED]",
-      "climb_sent": true,
-      "peak": 40102
+      "ground_alt": 34,
+      "flew": true
     }
   }
 }
