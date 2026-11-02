@@ -1,9 +1,17 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793561793.0803192,
+      "last_seen": 1793585140.3330152,
       "seen_ground": true,
-      "ground_alt": 35
+      "ground_alt": 94,
+      "flew": true,
+      "last_ad": "A MESSAGE FROM PRATT & WHITNEY:\nFOUR ENGINES. FOUR TIMES THE THRUST. FOUR TIMES THE FUEL BILL. PLEASE DO NOT SHOW THE ACCOUNTANT.",
+      "climb_sent": true,
+      "peak": 35360,
+      "descending": true,
+      "trough": 7598,
+      "anchor": 7598,
+      "anchor_t": 1793584839.3575084
     }
   }
 }
