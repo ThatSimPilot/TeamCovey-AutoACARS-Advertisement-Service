@@ -1,17 +1,17 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793585140.3330152,
+      "last_seen": 1793604859.0819333,
       "seen_ground": true,
-      "ground_alt": 94,
+      "ground_alt": 243,
       "flew": true,
-      "last_ad": "A MESSAGE FROM PRATT & WHITNEY:\nFOUR ENGINES. FOUR TIMES THE THRUST. FOUR TIMES THE FUEL BILL. PLEASE DO NOT SHOW THE ACCOUNTANT.",
+      "last_ad": "A MESSAGE FROM PANADOL:\nPASSING 10,000 FT. THE EAR POP IS NORMAL. THE PILOT'S CONFIDENCE IS NOT.",
       "climb_sent": true,
-      "peak": 35360,
+      "peak": 41073,
       "descending": true,
-      "trough": 7598,
-      "anchor": 7598,
-      "anchor_t": 1793584839.3575084
+      "trough": 20382,
+      "anchor": 20382,
+      "anchor_t": 1793604859.0819333
     }
   }
 }
