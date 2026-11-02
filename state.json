@@ -1,17 +1,13 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793604859.0819333,
+      "last_seen": 1793609513.593065,
       "seen_ground": true,
-      "ground_alt": 243,
+      "ground_alt": 133,
       "flew": true,
-      "last_ad": "A MESSAGE FROM PANADOL:\nPASSING 10,000 FT. THE EAR POP IS NORMAL. THE PILOT'S CONFIDENCE IS NOT.",
+      "last_ad": "A MESSAGE FROM VEGEMITE:\nA THIN SCRAPE IS FINE. A THICK SCRAPE IS A CRIME. THE CABIN CREW HAVE SEEN WHAT YOU DID TO THE SANDWICH IN ROW 9.",
       "climb_sent": true,
-      "peak": 41073,
-      "descending": true,
-      "trough": 20382,
-      "anchor": 20382,
-      "anchor_t": 1793604859.0819333
+      "peak": 10388
     }
   }
 }
