@@ -1,13 +1,13 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793723739.891574,
+      "last_seen": 1793747008.208646,
       "seen_ground": true,
-      "ground_alt": 181,
+      "ground_alt": 191,
       "flew": true,
-      "last_ad": "THIS FLIGHT WAS BROUGHT TO YOU BY RED BULL. IT GIVES YOU WINGS. YOUR AIRCRAFT ALREADY HAS WINGS. WE ARE WORRIED ABOUT HOW MANY YOU NOW HAVE.",
+      "last_ad": "A MESSAGE FROM PRINGLES:\nONCE YOU POP, THE CABIN PRESSURE DOES TOO. THE CAN IS NOT RATED FOR FL350. PLEASE KEEP THE CAN BELOW YOUR HEAD.",
       "climb_sent": true,
-      "peak": 38998
+      "peak": 38991
     }
   }
 }
