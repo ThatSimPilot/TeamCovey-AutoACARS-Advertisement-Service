@@ -1,17 +1,13 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793698696.586074,
+      "last_seen": 1793721139.3067205,
       "seen_ground": true,
-      "ground_alt": 101,
+      "ground_alt": 181,
       "flew": true,
-      "last_ad": "A MESSAGE FROM EASYJET:\nORANGE PLANES, ORANGE SEATS, ORANGE-COLOURED REGRET. PLEASE PAY EXTRA FOR THE WINDOW. THE WINDOW IS A STICKER.",
+      "last_ad": "THIS FLIGHT WAS BROUGHT TO YOU BY RED BULL. IT GIVES YOU WINGS. YOUR AIRCRAFT ALREADY HAS WINGS. WE ARE WORRIED ABOUT HOW MANY YOU NOW HAVE.",
       "climb_sent": true,
-      "peak": 37005,
-      "descending": true,
-      "trough": 28182,
-      "anchor": 28182,
-      "anchor_t": 1793698696.586074
+      "peak": 38998
     }
   }
 }
