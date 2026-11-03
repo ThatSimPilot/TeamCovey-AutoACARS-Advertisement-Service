@@ -1,10 +1,17 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793643346.9057183,
+      "last_seen": 1793665054.0546024,
       "seen_ground": true,
-      "ground_alt": 32,
-      "flew": true
+      "ground_alt": 4239,
+      "flew": true,
+      "last_ad": "THIS FLIGHT WAS BROUGHT TO YOU BY RED BULL. IT GIVES YOU WINGS. YOUR AIRCRAFT ALREADY HAS WINGS. WE ARE WORRIED ABOUT HOW MANY YOU NOW HAVE.",
+      "climb_sent": true,
+      "peak": 6199,
+      "descending": false,
+      "trough": 5274,
+      "anchor": 5508,
+      "anchor_t": 1793664110.3740275
     }
   }
 }
