@@ -1,17 +1,17 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793665054.0546024,
+      "last_seen": 1793684181.7972705,
       "seen_ground": true,
-      "ground_alt": 4239,
+      "ground_alt": 1338,
       "flew": true,
-      "last_ad": "THIS FLIGHT WAS BROUGHT TO YOU BY RED BULL. IT GIVES YOU WINGS. YOUR AIRCRAFT ALREADY HAS WINGS. WE ARE WORRIED ABOUT HOW MANY YOU NOW HAVE.",
+      "last_ad": "A MESSAGE FROM MONOPOLY:\nGO DIRECTLY TO JAIL. DO NOT PASS GO. DO NOT COLLECT $200. THIS ALSO APPLIES TO GO-AROUNDS.",
       "climb_sent": true,
-      "peak": 6199,
+      "peak": 39213,
       "descending": false,
-      "trough": 5274,
-      "anchor": 5508,
-      "anchor_t": 1793664110.3740275
+      "trough": 5014,
+      "anchor": 5215,
+      "anchor_t": 1793674273.6391737
     }
   }
 }
