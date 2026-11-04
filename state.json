@@ -1,9 +1,13 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793777012.3181617,
+      "last_seen": 1793800388.528366,
       "seen_ground": true,
-      "ground_alt": 550
+      "ground_alt": 3782,
+      "flew": true,
+      "last_ad": "A MESSAGE FROM ZOOM:\nYOU ARE MUTED. YOU HAVE BEEN MUTED FOR THE LAST 14 RADIO CALLS.",
+      "climb_sent": true,
+      "peak": 39008
     }
   }
 }
