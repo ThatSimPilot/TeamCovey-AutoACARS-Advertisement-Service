@@ -1,17 +1,10 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793873169.1941018,
+      "last_seen": 1793886310.414342,
       "seen_ground": true,
-      "ground_alt": 1991,
-      "flew": true,
-      "last_ad": "A MESSAGE FROM BOEING:\nTHE 747 CLIMBS AT THE SPEED OF A TIRED SEAGULL, BUT WITH FAR MORE DIGNITY. PLEASE ADMIRE THE QUEEN OF THE SKIES. SHE WILL GET THERE WHEN SHE GETS THERE.",
-      "climb_sent": true,
-      "peak": 39314,
-      "descending": true,
-      "trough": 5992,
-      "anchor": 5992,
-      "anchor_t": 1793872796.7738686
+      "ground_alt": 541,
+      "flew": true
     }
   }
 }
