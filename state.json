@@ -1,9 +1,17 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793924694.72733,
+      "last_seen": 1793946618.908524,
       "seen_ground": true,
-      "ground_alt": 88
+      "ground_alt": 450,
+      "flew": true,
+      "last_ad": "A MESSAGE FROM GARMIN:\nYOUR WATCH SAYS 10,000 FT. YOUR HEART RATE SAYS 142. YOUR PILOT SAYS NOTHING.",
+      "climb_sent": true,
+      "peak": 39301,
+      "descending": false,
+      "trough": 39167,
+      "anchor": 39175,
+      "anchor_t": 1793945118.1106727
     }
   }
 }
