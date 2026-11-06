@@ -1,9 +1,13 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1793970460.4564745,
+      "last_seen": 1793992113.5724156,
       "seen_ground": true,
-      "ground_alt": 2937
+      "ground_alt": 101,
+      "flew": true,
+      "last_ad": "A MESSAGE FROM EMBRAER:\nWE BUILD THE PLANE YOU GET WHEN THE AIRLINE SAYS 'REGIONAL FLIGHT'. YOU WILL HIT YOUR HEAD ON THE WAY IN. THIS IS INCLUDED.",
+      "climb_sent": true,
+      "peak": 40986
     }
   }
 }
