@@ -1,31 +1,9 @@
 {
   "flights": {
     "CVY44N": {
-      "last_seen": 1794035858.7045062,
+      "last_seen": 1794052776.4870684,
       "seen_ground": true,
-      "ground_alt": 1797,
-      "flew": true,
-      "last_ad": "A MESSAGE FROM UPS:\nWHAT CAN BROWN DO FOR YOU? WE CAN FIT 30 TONNES THROUGH THE NOSE OF A 747. YOUR SUITCASE IS NOT AMONG THEM.",
-      "climb_sent": true,
-      "peak": 37063
-    },
-    "CVY744": {
-      "last_seen": 1794035858.7045062,
-      "seen_ground": true,
-      "ground_alt": 1792,
-      "flew": true,
-      "last_ad": "A MESSAGE FROM AUSTRALIA POST:\nYOUR PARCEL IS WITH THE DRIVER. THE DRIVER IS IN ANOTHER STATE. WE LEFT A CARD. THE CARD IS IN ANOTHER STATE.",
-      "climb_sent": true,
-      "peak": 39085
-    },
-    "CVY69N": {
-      "last_seen": 1794035858.7045062,
-      "ground_alt": 1795,
-      "seen_ground": true,
-      "flew": true,
-      "last_ad": "A MESSAGE FROM GENERAL ELECTRIC:\nWE MAKE ENGINES, FRIDGES AND LIGHTBULBS. THE ENGINE IS VERY LOUD. THE FRIDGE IS NOT INCLUDED. THE LIGHTBULB IS IN THE LAVATORY.",
-      "climb_sent": true,
-      "peak": 32710
+      "ground_alt": 382
     }
   }
 }
