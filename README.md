@@ -1,5 +1,7 @@
 # TeamCovey AutoACARS Advertisement Service
 
+[![ACARS takeoff bot](https://github.com/ThatSimPilot/TeamCovey-AutoACARS-Advertisement-Service/actions/workflows/acars.yml/badge.svg?event=workflow_dispatch)](https://github.com/ThatSimPilot/TeamCovey-AutoACARS-Advertisement-Service/actions/workflows/acars.yml)
+
 A small bot that watches [VATSIM](https://www.vatsim.net/) for flights with a matching callsign, and sends a random parody advertisement as an ACARS telex (via [Hoppie](https://www.hoppie.nl/acars/)) when the aircraft climbs through 10,000 ft and again after it lands.
 
 It is an automated parody. It is not affiliated with any airline or advertiser.
